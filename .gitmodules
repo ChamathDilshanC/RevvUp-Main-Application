@@ -1,0 +1,6 @@
+[submodule "revvup-frontend"]
+	path = revvup-frontend
+	url = https://github.com/tharakawijayathilaka/revvup-frontend.git
+[submodule "revvup-backend"]
+	path = revvup-backend
+	url = https://github.com/tharakawijayathilaka/revvup-backend.git
