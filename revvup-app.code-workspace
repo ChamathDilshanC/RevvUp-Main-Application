@@ -1,0 +1,10 @@
+{
+  "folders": [
+    { "name": "Frontend (Expo)", "path": "revvup-frontend" },
+    { "name": "Backend (FastAPI)", "path": "revvup-backend" }
+  ],
+  "settings": {
+    "typescript.tsdk": "revvup-frontend/node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true
+  }
+}

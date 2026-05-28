@@ -7,7 +7,7 @@
 RevvUp uses a **monorepo + Git submodules** layout: one main repository orchestrates two independently versioned projects.
 
 ```
-revvup-app/                 ← Main repository (this repo)
+main-application/           ← Main repository (this repo)
 ├── README.md
 ├── .gitignore
 ├── .gitmodules
@@ -17,8 +17,8 @@ revvup-app/                 ← Main repository (this repo)
 
 | Repository | Stack | Role |
 | ---------- | ----- | ---- |
-| [revvup-frontend](https://github.com/tharakawijayathilaka/revvup-frontend) | React Native, Expo, NativeWind | Mobile UI — Explore, Catalog, Details, Profile |
-| [revvup-backend](https://github.com/tharakawijayathilaka/revvup-backend) | FastAPI, Vercel Serverless | REST API — bikes catalog, specs, auth |
+| [revvup-frontend](https://github.com/ChamathDilshanC/revvup-frontend) | React Native, Expo, NativeWind | Mobile UI — Explore, Catalog, Details, Profile |
+| [revvup-backend](https://github.com/ChamathDilshanC/revvup-backend) | FastAPI, Vercel Serverless | REST API — bikes catalog, specs, auth |
 
 ### Why submodules?
 
@@ -31,8 +31,8 @@ revvup-app/                 ← Main repository (this repo)
 To clone the main repo **and** all submodules in one step:
 
 ```bash
-git clone --recursive https://github.com/tharakawijayathilaka/revvup-app.git
-cd revvup-app
+git clone --recursive https://github.com/ChamathDilshanC/main-application.git
+cd main-application
 ```
 
 If you already cloned without `--recursive`:
@@ -95,9 +95,9 @@ git commit -m "chore: bump frontend submodule"
 
 ## Repository Links
 
-- **Main:** https://github.com/tharakawijayathilaka/revvup-app
-- **Frontend:** https://github.com/tharakawijayathilaka/revvup-frontend
-- **Backend:** https://github.com/tharakawijayathilaka/revvup-backend
+- **Main:** https://github.com/ChamathDilshanC/main-application
+- **Frontend:** https://github.com/ChamathDilshanC/revvup-frontend
+- **Backend:** https://github.com/ChamathDilshanC/revvup-backend
 
 ## License
 
