@@ -1,5 +1,7 @@
-# RevvUp — Create GitHub repos under ChamathDilshanC (NOT Cursor Agent / other accounts)
-# Prerequisites: gh auth login  →  select account ChamathDilshanC
+# RevvUp — Push to ChamathDilshanC and rename main repo to main-application
+# Prerequisites:
+#   1. Accept repo transfer emails on ChamathDilshanC (from tharakawijayathilaka)
+#   2. gh auth login  ->  account ChamathDilshanC
 # Usage:  .\scripts\setup-github-chamath.ps1
 
 $ErrorActionPreference = "Stop"
@@ -75,6 +77,19 @@ Publish-Repo -Path "$Root\revvup-backend" -RepoName "revvup-backend" -Descriptio
 
 Write-Host "=== 3/3 main-application (submodules) ===" -ForegroundColor Cyan
 
+# Rename revvup-app -> main-application after transfer is accepted
+try {
+    gh repo view "${ExpectedUser}/revvup-app" 1>$null 2>$null
+    Write-Host "Renaming revvup-app -> main-application ..." -ForegroundColor Cyan
+    gh repo rename main-application --repo "${ExpectedUser}/revvup-app" --yes
+} catch {
+    if (gh repo view "${ExpectedUser}/main-application" 1>$null 2>$null) {
+        Write-Host "main-application already exists." -ForegroundColor Yellow
+    } else {
+        Write-Host "Create main-application manually if transfer not accepted yet." -ForegroundColor Yellow
+    }
+}
+
 # Ensure .gitmodules points to ChamathDilshanC
 @"
 [submodule "revvup-frontend"]
@@ -93,7 +108,11 @@ git remote set-url origin "https://github.com/ChamathDilshanC/revvup-backend.git
 Set-Location $Root
 
 Invoke-GitCommit -Path $Root -Message "chore: link submodules to ChamathDilshanC and add workspace config"
-Publish-Repo -Path $Root -RepoName "main-application" -Description "RevvUp main app — git submodules (frontend + backend)"
+$mainRemote = "https://github.com/${ExpectedUser}/main-application.git"
+Set-Location $Root
+if (git remote | Select-String -Pattern "^origin$") { git remote set-url origin $mainRemote } else { git remote add origin $mainRemote }
+git push -u origin main
+Write-Host "Pushed main-application." -ForegroundColor Green
 
 Write-Host ""
 Write-Host "Done. Repositories:" -ForegroundColor Green
