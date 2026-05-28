@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# Expo / React Native
+.expo/
+dist/
+web-build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
