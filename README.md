@@ -1,98 +1,104 @@
 # RevvUp
 
-**RevvUp** is a premium, multi-vendor motorbike marketplace mobile application. Verified **showroom owners** list and manage inventory per shop; **clients** browse a unified catalog across all showrooms with a sleek dark UI.
+**RevvUp** is a premium, modern motorbike selling mobile application. Riders explore curated superbikes, inspect detailed hardware specs, and manage accounts through a sleek dark-themed experience.
 
-## Multi-vendor architecture
+## Architecture Overview
+
+RevvUp uses a **monorepo + Git submodules** layout: one main repository orchestrates two independently versioned projects.
 
 ```
-revvup-app/                    ← Main repository (Git submodules)
+main-application/           ← Main repository (this repo)
 ├── README.md
 ├── .gitignore
 ├── .gitmodules
-├── revvup-frontend/           ← Submodule: React Native + NativeWind
-└── revvup-backend/            ← Submodule: FastAPI on Vercel Serverless
+├── revvup-frontend/        ← Submodule: React Native + NativeWind
+└── revvup-backend/         ← Submodule: FastAPI on Vercel
 ```
 
-| Role | Frontend experience | Backend access |
-| ---- | ------------------- | -------------- |
-| **Client** | Explore, Catalog, Bike details (read-only) | `GET /api/v1/bikes`, `GET /api/v1/bikes/{id}`, `GET /api/v1/showrooms` |
-| **Showroom owner** | Dashboard, inventory CRUD, showroom profile | `GET/POST/PUT/DELETE /api/v1/owner/bikes`, `PATCH /api/v1/owner/showroom/me` |
-| **Admin** | Approval workflows (email + API) | Admin endpoints + full owner capabilities |
+| Repository | Stack | Role |
+| ---------- | ----- | ---- |
+| [revvup-frontend](https://github.com/ChamathDilshanC/revvup-frontend) | React Native, Expo, NativeWind | Mobile UI — Explore, Catalog, Details, Profile |
+| [revvup-backend](https://github.com/ChamathDilshanC/revvup-backend) | FastAPI, Vercel Serverless | REST API — bikes catalog, specs, auth |
 
-Owners register as `showroom_owner` (API role). After developer email approval, status becomes `active` and owner routes unlock.
+### Why submodules?
 
-## Permission matrix
+- **Independent releases** — Ship frontend and backend on separate cadences.
+- **Clear ownership** — Each repo has its own CI, issues, and access control.
+- **Single entry point** — Developers clone one umbrella repo and get both projects aligned.
 
-| Action | Client | Showroom owner | Admin |
-| ------ | :----: | :------------: | :---: |
-| Browse all bikes | ✅ | ✅ | ✅ |
-| View bike details | ✅ | ✅ | ✅ |
-| List showrooms | ✅ | ✅ | ✅ |
-| Create / edit / delete bikes | ❌ | ✅ (own only) | ✅ |
-| Edit own showroom profile | ❌ | ✅ | ✅ |
-| Approve pending owners | ❌ | ❌ | ✅ |
+## Clone (Recursive)
 
-## Tech stack
-
-| Layer | Technology |
-| ----- | ---------- |
-| Mobile | React Native (Expo), NativeWind, React Navigation |
-| API | FastAPI, Pydantic, Vercel Serverless |
-| Data | Supabase (Postgres, Auth, Storage) |
-
-## Clone (recursive)
+To clone the main repo **and** all submodules in one step:
 
 ```bash
-git clone --recursive https://github.com/ChamathDilshanC/revvup-app.git
-cd revvup-app
+git clone --recursive https://github.com/ChamathDilshanC/main-application.git
+cd main-application
+```
+
+If you already cloned without `--recursive`:
+
+```bash
 git submodule update --init --recursive
 ```
 
-Legacy umbrella repo: [main-application](https://github.com/ChamathDilshanC/main-application) (same layout).
-
-## Quick start
+## Quick Start
 
 ### Frontend
 
 ```bash
 cd revvup-frontend
 npm install
-cp .env.example .env   # EXPO_PUBLIC_API_URL
-npx expo start
+npm start
 ```
+
+See [revvup-frontend/README.md](revvup-frontend/README.md).
 
 ### Backend
 
 ```bash
 cd revvup-backend
 python -m venv .venv
-.venv\Scripts\activate
+.venv\Scripts\activate    # Windows
 pip install -r requirements.txt
-cp .env.example .env
 uvicorn app.main:app --reload --port 8000
 ```
 
-## Submodule workflow
+See [revvup-backend/README.md](revvup-backend/README.md).
+
+## API Summary
+
+| Endpoint | Method |
+| -------- | ------ |
+| `/api/v1/bikes` | `GET` |
+| `/api/v1/bikes/{id}` | `GET` |
+| `/api/v1/auth/login` | `POST` |
+| `/api/v1/auth/register` | `POST` |
+
+## Updating Submodules
+
+Pull latest commits for all submodules:
 
 ```bash
-# Pull latest in all submodules
 git submodule update --remote --merge
-
-# Commit pointer bump in main repo
-git add revvup-frontend revvup-backend
-git commit -m "chore: bump submodules"
 ```
 
-## Repository links
+Or work inside a submodule as its own repo:
 
-| Repo | URL |
-| ---- | --- |
-| Main | https://github.com/ChamathDilshanC/revvup-app |
-| Frontend | https://github.com/ChamathDilshanC/revvup-frontend |
-| Backend | https://github.com/ChamathDilshanC/revvup-backend |
+```bash
+cd revvup-frontend
+git checkout main
+git pull origin main
+cd ..
+git add revvup-frontend
+git commit -m "chore: bump frontend submodule"
+```
 
-## Developer
+## Repository Links
 
-**Chamath Dilshan** — [GitHub](https://github.com/chamathdilshanc) · [LinkedIn](https://www.linkedin.com/in/chamathdilsahnc/) · dilshancolonne123@gmail.com
+- **Main:** https://github.com/ChamathDilshanC/main-application
+- **Frontend:** https://github.com/ChamathDilshanC/revvup-frontend
+- **Backend:** https://github.com/ChamathDilshanC/revvup-backend
+
+## License
 
 Proprietary — RevvUp © 2026
